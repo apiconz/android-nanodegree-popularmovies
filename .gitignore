@@ -1,7 +1,14 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
+
+# Windows thumbnail db
+Thumbs.db
+
+# Android Studio
+*.iml
+/.idea
+#/.idea/workspace.xml
+#/.idea/libraries
