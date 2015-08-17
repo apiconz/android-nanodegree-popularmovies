@@ -12,3 +12,9 @@ Thumbs.db
 /.idea
 #/.idea/workspace.xml
 #/.idea/libraries
+*.iml
+.idea/.name
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/misc.xml
+app/app.iml
