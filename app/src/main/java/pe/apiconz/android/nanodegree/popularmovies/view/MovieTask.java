@@ -38,7 +38,7 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
         this.movieAdapter = movieAdapter;
     }
 
-    protected List<Movie> doInBackground(String... urls) {
+    protected List<Movie> doInBackground(String... params) {
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -52,7 +52,7 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
             final String API_KEY_PARAM = "api_key";
 
             Uri builtUri = Uri.parse(MOVIES_BASE_URL).buildUpon()
-                    .appendQueryParameter(SORT_PARAM, "popularity.desc")
+                    .appendQueryParameter(SORT_PARAM, params[0])
                     .appendQueryParameter(API_KEY_PARAM, API_KEY).build();
 
             Log.d(LOG_TAG,builtUri.toString());

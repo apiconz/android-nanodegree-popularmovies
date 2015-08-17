@@ -16,6 +16,7 @@ import java.util.List;
 
 import pe.apiconz.android.nanodegree.popularmovies.R;
 import pe.apiconz.android.nanodegree.popularmovies.pojo.Movie;
+import pe.apiconz.android.nanodegree.popularmovies.util.Utility;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -35,7 +36,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        inflater.inflate(R.menu.menu_fragment, menu);
     }
 
     @Override
@@ -66,7 +67,8 @@ public class MainActivityFragment extends Fragment {
     private void updateMovies(){
 
         MovieTask movieTask = new MovieTask(getActivity(),movieAdapter);
-        movieTask.execute();
+        String sortBy = Utility.getPreferredSortingCriteria(getActivity());
+        movieTask.execute(sortBy);
 
     }
 
