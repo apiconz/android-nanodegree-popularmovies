@@ -1,14 +1,17 @@
 package pe.apiconz.android.nanodegree.popularmovies.view;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -23,7 +26,10 @@ import pe.apiconz.android.nanodegree.popularmovies.util.Utility;
  */
 public class MainActivityFragment extends Fragment {
 
+    private static final String LOG_TAG = MainActivityFragment.class.getCanonicalName();
+
     private MovieAdapter movieAdapter;
+    private GridView myGridView;
 
     public MainActivityFragment() {
     }
@@ -57,9 +63,26 @@ public class MainActivityFragment extends Fragment {
         movieAdapter = new MovieAdapter(getActivity(), new ArrayList<>());
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        GridView myGridView = (GridView) rootView.findViewById(R.id.myGridView);
+        myGridView = (GridView) rootView.findViewById(R.id.myGridView);
         myGridView.setNumColumns(2);
         myGridView.setAdapter(movieAdapter);
+        myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Movie movie = (Movie)myGridView.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+                intent.putExtra("movieId", movie.getId());
+                intent.putExtra("moviePosterPath", movie.getPosterPath());
+                intent.putExtra("movieTitle", movie.getTitle());
+                intent.putExtra("movieReleaseDate", movie.getReleaseDate());
+                intent.putExtra("movieSynopsis", movie.getSynopsis());
+                intent.putExtra("movieUserRating", movie.getUserRating());
+                startActivity(intent);
+
+                Log.i(LOG_TAG, "" + movie.toString() );
+            }
+        });
 
         return rootView;
     }

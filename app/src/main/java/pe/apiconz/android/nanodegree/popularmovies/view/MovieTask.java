@@ -124,6 +124,11 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
             movie = new Movie();
             movie.setId(movieJson.getString("id"));
             movie.setPosterPath(movieJson.getString("poster_path"));
+            movie.setTitle(movieJson.getString("original_title"));
+            movie.setSynopsis(movieJson.getString("overview"));
+            movie.setUserRating(movieJson.getString("vote_average"));
+            movie.setReleaseDate(movieJson.getString("release_date"));
+
             results.add(movie);
         }
 

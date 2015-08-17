@@ -50,12 +50,23 @@ public class MovieAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Movie getItem(int position) {
+
+        if(movieList != null && movieList.size() != 0){
+            Movie movie = (Movie)movieList.get(position);
+            return movie;
+        }
         return null;
     }
 
     @Override
     public long getItemId(int position) {
+
+        if(movieList != null && movieList.size() != 0){
+            Movie movie = (Movie)movieList.get(position);
+            return Long.parseLong(movie.getId());
+        }
+
         return 0;
     }
 
