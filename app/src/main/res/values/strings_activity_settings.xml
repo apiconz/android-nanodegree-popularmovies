@@ -1,0 +1,19 @@
+<resources>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+    <string name="pref_default_sort_by">vote_count.desc</string>
+    <string name="pref_title_sort_by">Sort results by</string>
+    <string-array name="pref_sort_by_titles">
+        <item>By Most Popular</item>
+        <item>By Highest-Rated</item>
+    </string-array>
+    <string-array name="pref_sort_by_values">
+        <item>popularity.desc</item>
+        <item>vote_count.desc</item>
+    </string-array>
+
+</resources>
