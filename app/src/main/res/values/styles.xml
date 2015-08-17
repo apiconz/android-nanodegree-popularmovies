@@ -5,4 +5,29 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="movie_poster">
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="movie_detail_title">
+        <item name="android:padding">4dip</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_marginTop">60dp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="movie_detail_sub_titles">
+        <item name="android:padding">10dip</item>
+        <item name="android:background">#000000</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:layout_margin">10dp</item>
+    </style>
+
+    <style name="movie_detail_synopsis">
+        <item name="android:layout_margin">10dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

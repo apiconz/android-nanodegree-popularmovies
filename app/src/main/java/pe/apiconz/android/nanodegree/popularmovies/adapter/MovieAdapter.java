@@ -1,4 +1,4 @@
-package pe.apiconz.android.nanodegree.popularmovies.view;
+package pe.apiconz.android.nanodegree.popularmovies.adapter;
 
 import android.content.Context;
 import android.util.Log;

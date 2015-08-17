@@ -1,4 +1,4 @@
-package pe.apiconz.android.nanodegree.popularmovies.view;
+package pe.apiconz.android.nanodegree.popularmovies.task;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.apiconz.android.nanodegree.popularmovies.adapter.MovieAdapter;
 import pe.apiconz.android.nanodegree.popularmovies.pojo.Movie;
 
 /**

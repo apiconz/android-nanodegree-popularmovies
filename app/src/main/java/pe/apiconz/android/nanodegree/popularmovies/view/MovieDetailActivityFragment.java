@@ -31,10 +31,13 @@ public class MovieDetailActivityFragment extends Fragment {
         TextView txtMovieTitle = (TextView) rootView.findViewById(R.id.movie_title);
         txtMovieTitle.setText(intent.getStringExtra("movieTitle"));
         ImageView imgMovieImage = (ImageView) rootView.findViewById(R.id.movie_image);
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w185/" + intent.getStringExtra("moviePosterPath")).into(imgMovieImage);
+        Picasso.with(getActivity())
+                .load("http://image.tmdb.org/t/p/w342/" + intent.getStringExtra("moviePosterPath"))
+                .placeholder(R.drawable.dumb)
+                .into(imgMovieImage);
         TextView txtMovieYear = (TextView) rootView.findViewById(R.id.movie_year);
         txtMovieYear.setText(intent.getStringExtra("movieReleaseDate"));
-        TextView txtMovieDuration = (TextView) rootView.findViewById(R.id.movie_duration);
+        //TextView txtMovieDuration = (TextView) rootView.findViewById(R.id.movie_duration);
         TextView txtMovieRate = (TextView) rootView.findViewById(R.id.movie_rate);
         txtMovieRate.setText(intent.getStringExtra("movieUserRating"));
         TextView txtMovieSynopsis = (TextView) rootView.findViewById(R.id.movie_synopsis);

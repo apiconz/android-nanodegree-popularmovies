@@ -1,7 +1,6 @@
 package pe.apiconz.android.nanodegree.popularmovies.view;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +14,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import pe.apiconz.android.nanodegree.popularmovies.R;
+import pe.apiconz.android.nanodegree.popularmovies.adapter.MovieAdapter;
 import pe.apiconz.android.nanodegree.popularmovies.pojo.Movie;
+import pe.apiconz.android.nanodegree.popularmovies.task.MovieTask;
 import pe.apiconz.android.nanodegree.popularmovies.util.Utility;
 
 /**
