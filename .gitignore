@@ -10,11 +10,12 @@ Thumbs.db
 # Android Studio
 *.iml
 /.idea
-#/.idea/workspace.xml
-#/.idea/libraries
+/.idea/workspace.xml
+/.idea/libraries
 *.iml
 .idea/.name
 .idea/gradle.xml
 .idea/compiler.xml
 .idea/misc.xml
+.idea
 app/app.iml
