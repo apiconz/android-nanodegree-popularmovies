@@ -1,11 +1,13 @@
 package pe.apiconz.android.nanodegree.popularmovies.pojo;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by armando on 16/08/15.
+ * http://developer.android.com/reference/android/os/Parcelable.html
  */
-public class Movie implements Serializable{
+public class Movie implements Parcelable {
 
     private String id;
     private String posterPath;
@@ -66,4 +68,46 @@ public class Movie implements Serializable{
     public String toString() {
         return "{id:" + this.id + ", posterPath:" + this.posterPath + "}";
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(posterPath);
+        dest.writeString(title);
+        dest.writeString(userRating);
+        dest.writeString(releaseDate);
+        dest.writeString(synopsis);
+    }
+
+    public Movie() {
+        super();
+    }
+
+
+    public Movie(Parcel in) {
+        id = in.readString();
+        posterPath = in.readString();
+        title = in.readString();
+        userRating = in.readString();
+        releaseDate = in.readString();
+        synopsis = in.readString();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
