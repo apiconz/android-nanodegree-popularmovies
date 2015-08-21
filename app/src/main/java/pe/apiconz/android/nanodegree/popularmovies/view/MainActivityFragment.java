@@ -19,18 +19,18 @@ import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import pe.apiconz.android.nanodegree.popularmovies.R;
 import pe.apiconz.android.nanodegree.popularmovies.adapter.MovieAdapter;
 import pe.apiconz.android.nanodegree.popularmovies.pojo.Movie;
 import pe.apiconz.android.nanodegree.popularmovies.task.MovieTask;
+import pe.apiconz.android.nanodegree.popularmovies.util.MovieInterface;
 import pe.apiconz.android.nanodegree.popularmovies.util.Utility;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class MainActivityFragment extends Fragment implements MovieInterface {
 
     private static final String LOG_TAG = MainActivityFragment.class.getCanonicalName();
     public static final String MOVIE_LIST_KEY = "movieList";
@@ -43,10 +43,10 @@ public class MainActivityFragment extends Fragment {
         movieList = new ArrayList<>();
     }
 
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         Log.d(LOG_TAG, "onSaveInstanceState Tamaño de lista:" + movieList.size());
         outState.putParcelableArrayList(MOVIE_LIST_KEY, (ArrayList<? extends Parcelable>) movieList);
     }
@@ -56,7 +56,6 @@ public class MainActivityFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
 
         if (savedInstanceState != null) {
-
             Log.d(LOG_TAG, "onViewStateRestored Tamaño de lista:" + movieList.size());
             movieList = (List<Movie>) savedInstanceState.get(MOVIE_LIST_KEY);
         }
@@ -82,7 +81,7 @@ public class MainActivityFragment extends Fragment {
 
         int id = item.getItemId();
         if(id == R.id.action_refresh){
-            updateMovies();
+            //updateMovies();
             return true;
         }
 
@@ -93,6 +92,8 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         if (savedInstanceState != null) {
             Log.d(LOG_TAG, "onCreateView");
             movieList = (List<Movie>) savedInstanceState.get(MOVIE_LIST_KEY);
@@ -100,9 +101,15 @@ public class MainActivityFragment extends Fragment {
         }
 
         movieAdapter = new MovieAdapter(getActivity(), movieList);
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
         myGridView = (GridView) rootView.findViewById(R.id.myGridView);
+
+        if (movieList == null || movieList.size() == 0) {
+            if (savedInstanceState == null) {
+                savedInstanceState = new Bundle();
+            }
+            updateMovies(savedInstanceState);
+        }
+
         myGridView.setAdapter(movieAdapter);
         myGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -125,45 +132,27 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
-    private void updateMovies(){
-        if (isConnectionActive()) {
-            MovieTask movieTask = new MovieTask(getActivity(), movieAdapter);
+    private void updateMovies(Bundle savedInstanceState) {
+        if (Utility.isConnectionActive(getActivity())) {
+            MovieTask movieTask = new MovieTask(getActivity(), movieAdapter, savedInstanceState, this);
             String sortBy = Utility.getPreferredSortingCriteria(getActivity());
-            try {
-                movieList = movieTask.execute(sortBy).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+            movieTask.execute(sortBy);
+            super.onSaveInstanceState(savedInstanceState);
+        }
+    }
+
+    private void updateMovies(){
+        if (Utility.isConnectionActive(getActivity())) {
+            MovieTask movieTask = new MovieTask(getActivity(), movieAdapter, this);
+            String sortBy = Utility.getPreferredSortingCriteria(getActivity());
+            movieTask.execute(sortBy);
         }
 
     }
 
-    /**
-     * Reference:
-     * http://stackoverflow.com/questions/4238921/detect-whether-there-is-an-internet-connection-available-on-android
-     */
-    private boolean isConnectionActive() {
-        boolean wifiConnection = false;
-        boolean mobileConnection = false;
-
-        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo[] networksInfo = connManager.getAllNetworkInfo();
-        for (NetworkInfo networkInfo : networksInfo) {
-            if (networkInfo.getTypeName().equalsIgnoreCase("WIFI"))
-                if (networkInfo.isConnected())
-                    wifiConnection = true;
-            if (networkInfo.getTypeName().equalsIgnoreCase("MOBILE"))
-                if (networkInfo.isConnected())
-                    mobileConnection = true;
-        }
-        return wifiConnection || mobileConnection;
-    }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        updateMovies();
+    public void setMovieData(List<Movie> movieData) {
+        movieList = movieData;
     }
 }

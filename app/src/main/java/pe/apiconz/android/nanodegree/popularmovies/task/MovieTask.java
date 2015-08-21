@@ -3,6 +3,9 @@ package pe.apiconz.android.nanodegree.popularmovies.task;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,6 +24,8 @@ import java.util.List;
 
 import pe.apiconz.android.nanodegree.popularmovies.adapter.MovieAdapter;
 import pe.apiconz.android.nanodegree.popularmovies.pojo.Movie;
+import pe.apiconz.android.nanodegree.popularmovies.util.MovieInterface;
+import pe.apiconz.android.nanodegree.popularmovies.view.MainActivityFragment;
 
 /**
  * Created by armando on 16/08/15.
@@ -33,10 +38,22 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
 
     private final Context context;
     private MovieAdapter movieAdapter;
+    private Bundle bundle;
+    private MovieInterface listener;
 
-    public MovieTask(Context context, MovieAdapter movieAdapter) {
+    public MovieTask(Context context, MovieAdapter movieAdapter, MovieInterface listener) {
         this.context = context;
         this.movieAdapter = movieAdapter;
+        this.bundle = new Bundle();
+        this.listener = listener;
+    }
+
+    public MovieTask(Context context, MovieAdapter movieAdapter, Bundle bundle, MovieInterface listener) {
+        this.context = context;
+        this.movieAdapter = movieAdapter;
+        this.bundle = bundle;
+        this.listener = listener;
+
     }
 
     protected List<Movie> doInBackground(String... params) {
@@ -109,6 +126,8 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
         Log.d(LOG_TAG,"ingreso a onPostExecute");
         if(movies != null){
             movieAdapter.setMovieList(movies);
+            bundle.putParcelableArrayList(MainActivityFragment.MOVIE_LIST_KEY, (ArrayList<? extends Parcelable>) movies);
+            listener.setMovieData(movies);
         }
 
     }
@@ -119,7 +138,7 @@ public class MovieTask extends AsyncTask<String, Void, List<Movie>> {
         JSONArray moviesArray = moviesJson.getJSONArray("results");
         List<Movie> results = new ArrayList<>();
 
-        Movie movie = null;
+        Movie movie;
         for (int i = 0; i < moviesArray.length(); i++){
             JSONObject movieJson = moviesArray.getJSONObject(i);
             movie = new Movie();
