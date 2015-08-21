@@ -1,9 +1,6 @@
 package pe.apiconz.android.nanodegree.popularmovies.view;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -16,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +36,7 @@ public class MainActivityFragment extends Fragment implements MovieInterface {
     private MovieAdapter movieAdapter;
     private GridView myGridView;
     private List<Movie> movieList;
-
+    private String sortBy;
     public MainActivityFragment() {
         movieList = new ArrayList<>();
     }
@@ -107,6 +105,8 @@ public class MainActivityFragment extends Fragment implements MovieInterface {
             if (savedInstanceState == null) {
                 savedInstanceState = new Bundle();
             }
+
+            hasSortCriteriaChanged();
             updateMovies(savedInstanceState);
         }
 
@@ -135,7 +135,6 @@ public class MainActivityFragment extends Fragment implements MovieInterface {
     private void updateMovies(Bundle savedInstanceState) {
         if (Utility.isConnectionActive(getActivity())) {
             MovieTask movieTask = new MovieTask(getActivity(), movieAdapter, savedInstanceState, this);
-            String sortBy = Utility.getPreferredSortingCriteria(getActivity());
             movieTask.execute(sortBy);
             super.onSaveInstanceState(savedInstanceState);
         }
@@ -144,12 +143,36 @@ public class MainActivityFragment extends Fragment implements MovieInterface {
     private void updateMovies(){
         if (Utility.isConnectionActive(getActivity())) {
             MovieTask movieTask = new MovieTask(getActivity(), movieAdapter, this);
-            String sortBy = Utility.getPreferredSortingCriteria(getActivity());
             movieTask.execute(sortBy);
+        } else {
+            Toast.makeText(
+                    getActivity(),
+                    getString(R.string.message_no_connection),
+                    Toast.LENGTH_SHORT)
+                    .show();
         }
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(hasSortCriteriaChanged()){
+            updateMovies();
+        }
+
+    }
+
+    private boolean hasSortCriteriaChanged() {
+        String sortCriteria = Utility.getPreferredSortingCriteria(getActivity());
+        if(sortBy == null || sortBy.compareTo(sortCriteria) != 0){
+            sortBy = sortCriteria;
+            return true;
+        }
+
+        return false;
+    }
 
     @Override
     public void setMovieData(List<Movie> movieData) {

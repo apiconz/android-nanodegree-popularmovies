@@ -29,12 +29,12 @@ public class MovieAdapter extends BaseAdapter {
     private List movieList;
 
     public MovieAdapter(Context context, List movieList) {
-        Log.d(LOG_TAG,"Ingreso al constructor 2");
+        Log.d(LOG_TAG, "Ingreso al constructor 2");
         this.context = context;
         this.movieList = movieList;
     }
 
-    public void setMovieList(List movieList){
+    public void setMovieList(List movieList) {
         this.movieList = movieList;
         notifyDataSetChanged();
     }
@@ -52,8 +52,8 @@ public class MovieAdapter extends BaseAdapter {
     @Override
     public Movie getItem(int position) {
 
-        if(movieList != null && movieList.size() != 0){
-            Movie movie = (Movie)movieList.get(position);
+        if (movieList != null && movieList.size() != 0) {
+            Movie movie = (Movie) movieList.get(position);
             return movie;
         }
         return null;
@@ -62,8 +62,8 @@ public class MovieAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
 
-        if(movieList != null && movieList.size() != 0){
-            Movie movie = (Movie)movieList.get(position);
+        if (movieList != null && movieList.size() != 0) {
+            Movie movie = (Movie) movieList.get(position);
             return Long.parseLong(movie.getId());
         }
 
@@ -72,23 +72,28 @@ public class MovieAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.d(LOG_TAG,"entro a getView");
-        Log.d(LOG_TAG,"Position:" + position);
+        Log.d(LOG_TAG, "entro a getView");
+        Log.d(LOG_TAG, "Position:" + position);
         ImageView imageView;
 
         Movie movie = (Movie) movieList.get(position);
 
-        if(convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.grid_item, null);
             imageView = (ImageView) convertView.findViewById(R.id.imageViewPoster);
-        } else{
+        } else {
             imageView = (ImageView) convertView;
         }
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.FILL_PARENT,
+                LinearLayout.LayoutParams.FILL_PARENT);
         convertView.setLayoutParams(new GridView.LayoutParams(params));
 
-        Picasso.with(context).load(getMoviePoster(movie.getPosterPath())).error(R.drawable.dumb).into(imageView);
+        Picasso.with(context)
+                .load(getMoviePoster(movie.getPosterPath()))
+                .error(R.drawable.dumb)
+                .into(imageView);
 
         return convertView;
     }
